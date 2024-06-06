@@ -1,3 +1,3 @@
 # CompetetivePrograming
 
-Codes of Contest, that I give and practice I do
+Codes of Contest that I give and practice I do
