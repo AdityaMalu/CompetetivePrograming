@@ -1,72 +1,46 @@
-#If input array is sorted then
-#- Binary search
-#- Two pointers
-
-#If asked for all permutations/subsets then
-#- Backtracking
-
-#If given a tree then
-#- DFS
-#- BFS
-
-#If given a graph then
-#- DFS
-#- BFS
-
-#If given a linked list then
-#- Two pointers
-
-#If recursion is banned then
-#- Stack
-
-#If must solve in-place then
-#- Swap corresponding values
-#- Store one or more different values in the same pointer
-
-#If asked for maximum/minimum subarray/subset/options then
-#Dynamic programming
-
-#If asked for top/least K items then
-#- Heap
-#- QuickSelect
-
-#If asked for common strings then
-#- Map
-
-#Else
-#- Map/Set for O(1) time & O(n) space
-#- Sort input for O(nlogn) time and O(1) space
-import sys
-from collections import defaultdict, deque
-from heapq import heappop, heappush
-
-import math
-import bisect
-import itertools
-import functools
-import random
-
-def main():
-    t = int(input())
-    for _ in range(t):
-        n,k = map(int, input().split())
+def find_permutation(n, k):
+    A = list(range(1, n + 1))
+    
+    max_diff = sum((n - i) for i in range(n))
+    
+    if k > max_diff or k < 0:
+        return []
+    P = A[:]
+    
+    current_diff_sum = 0
+    
+    left = 0
+    right = n - 1
+    
+    while current_diff_sum < k and left < right:
+        max_possible_swap_diff = (right - left)
+        
+        if current_diff_sum + max_possible_swap_diff <= k:
+            P[left], P[right] = P[right], P[left]
+            current_diff_sum += max_possible_swap_diff
+            left += 1
+            right -= 1
+        else:
+    
+            required_diff = k - current_diff_sum
+            swap_index = left + required_diff
+            P[left], P[swap_index] = P[swap_index], P[left]
+            current_diff_sum += required_diff
+            break
+    
+    return P
+for _ in range(int(input())):
+    n, k = map(int, input().split())
+    permutation = find_permutation(n, k//2)
+    if permutation:
         if n%2 == 0:
-            #sum of odd numbers till n:
             maxi = ((n//2)**2)*2
         else:
-            #sum of even numbers till n:
             maxi = (n//2)*(n//2 + 1)*2
         if k %2 ==1 or k > maxi:
-            print("NO")
+            print("NO") 
         else:
             print("YES")
-            arr = []
-            for i in range(n):
-                arr.append(i+1)
-            k = k//2
-            
-        
-
-
-if __name__ == "__main__":
-    main()
+            print(*permutation)
+    else:
+        print("NO")
